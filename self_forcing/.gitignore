@@ -1,0 +1,10 @@
+__pycache__
+*.egg-info
+
+wan_models
+checkpoints
+wan_cache/
+data_gt/
+outputs_wan_rtarget/
+videos/
+prompts/_smoke1.txt
