@@ -11,9 +11,12 @@ bash SETUP.sh          # conda env + deps + public Wan2.1-T2V-1.3B download
 ## 2. Get the adapted base (the one non-public artifact)
 The 1.3B correctors apply to OUR causally-adapted base (`adapted_base_4000.pt`, ~2.8 GB, too big
 for git). Two options:
-- **Download**: grab it from the internship artifact evacuation bundle (HF / internal share —
-  final link in the bundle README, produced 8/28) and place at
-  `self_forcing/wan_cache/adapted_base_4000.pt`.
+- **Download**: from the evacuation bundle — private HF dataset
+  `illustro1/clean-forcing-evacuation` (path `adapted_bases/adapted_base_4000.pt`; ask the
+  author for access; hash-verify with `bundle_meta/SHA256SUMS_tierA`). Also there: all
+  finals videos (`finals128/`, 13 systems), CF-row artifacts, pair pools, gates.
+  NOTE for any public/review re-release: strip this account-linked pointer first.
+  Place at `self_forcing/wan_cache/adapted_base_4000.pt`.
 - **Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Reproduce" section
   (`wan_gen_synthetic.py` then `STEPS=6000 wan_train_adapt.py`; deploy the 4K checkpoint).
 
