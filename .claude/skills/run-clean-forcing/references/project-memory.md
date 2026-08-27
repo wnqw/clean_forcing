@@ -66,3 +66,7 @@ starting points; re-verify on your own hardware before publishing new numbers.
 - Cross-host confirmations: chunk-cadence pulse appears in BOTH arms (protocol artifact,
   not corrector-induced); progression anchoring reappears (class property). Robustness
   knobs in `cf_external_base/cf_common.py`: ATTN (full-KV horizon), SINK (sink frames).
+- Inference-robustness matrix on the external base: the rolling-window protocol is mid-pack, not a
+  handicap — naive full-KV is WORSE (attention beyond the trained window = OOD rope distances);
+  attention sinks help the base (half-window sink best) but the strongest cache config still falls
+  short of the merged corrector, which changes no inference configuration at all.
