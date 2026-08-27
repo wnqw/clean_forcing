@@ -50,3 +50,19 @@ starting points; re-verify on your own hardware before publishing new numbers.
 ## Known corrected-rollout artifacts (documented in the paper, not bugs)
 - Chunk-cadence luminance pulse (mitigation knob: OVERLAP=1|2 decode, +1/3 NFE).
 - Progression anchoring (class property of reference-anchored objectives).
+
+## External-base transfer (Causal Forcing, the strongest generality test)
+- The recipe drops onto the Causal-Forcing chunkwise AR teacher UNCHANGED (exact state-dict
+  match into the same pipeline; scripts in `cf_external_base/`): Δ-drift +11.99 -> +2.80
+  (-77%), MUSIQ 52.0 -> 62.1, VBench subject/background/aesthetic recover to primary-system
+  parity — with zero host modification and zero per-host tuning (36 h single shot).
+- That base is teacher-forcing trained (never conditioned on its own outputs): sharpest
+  early frames of any host we measured (first-20% MUSIQ 71-74) AND the fastest collapse
+  (~10-15 s). Short-horizon quality and rollout robustness are different axes set by the
+  training objective; don't infer one from the other, and don't compare VBench numbers
+  across papers' protocols (short-horizon/saturated dims mislead).
+- The gate retrodicts here too: pre-training headroom Δ +10.83 ≈ measured +11.99. Converse
+  case: SkyReels-V2 gate Δ ≈ +1.0 -> do-not-correct regime, corrector run skipped by rule.
+- Cross-host confirmations: chunk-cadence pulse appears in BOTH arms (protocol artifact,
+  not corrector-induced); progression anchoring reappears (class property). Robustness
+  knobs in `cf_external_base/cf_common.py`: ATTN (full-KV horizon), SINK (sink frames).
