@@ -36,6 +36,9 @@ then procedures.
 - The 1.3B adapted base (`adapted_base_4000.pt`, ~2.8 GB) is NOT in git: fetch from the
   evacuation bundle link in `RUN.md` section 2, or reproduce in ~1 GPU-day (README "Reproduce"
   steps 1-2; zero real videos needed).
+- `cf_external_base/` — complete external-base runbook (Causal Forcing): pair build,
+  both training stages, finals, scoring, and the exact orchestrator scripts used; its
+  README carries the result summary and protocol footnotes.
 - `prompts_finals128.txt` — the exact locked evaluation prompts (seed = prompt index).
 - `user_study/` — manifest + anonymized responses; `python user_study/analysis.py --responses
   user_study/responses_anonymized.csv` reproduces the paper's preference table exactly.
