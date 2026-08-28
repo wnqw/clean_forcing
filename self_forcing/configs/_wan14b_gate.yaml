@@ -1,0 +1,12 @@
+# Wan2.1-T2V-14B viability gate (Clean Forcing scale-up feasibility, gate only -- NO training).
+# UNADAPTED 14B run block-causally, mirroring the 1.3B paper-host protocol:
+# 3-latent chunks, 20-step UniPC, rolling 21-latent KV window, CFG 6 / shift 8,
+# 832x480, bf16, batch 1 (cf. bench_overhead.py header + wan_train_adapt.py settings).
+# Merged on top of default_config.yaml + _undistilled_smoke.yaml.
+guidance_scale: 6.0
+timestep_shift: 8.0
+model_kwargs:
+  model_name: Wan2.1-T2V-14B
+  timestep_shift: 8.0
+  local_attn_size: 21
+  sink_size: 0
