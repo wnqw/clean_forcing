@@ -7,8 +7,15 @@ modification and no per-host tuning**.
 
 Result (n=128 prompts, 50 s, our protocol): Delta-drift +11.99 -> +2.80 (-77%),
 MUSIQ 52.0 -> 62.1; VBench subject 64.9 -> 81.8, background 75.7 -> 87.9,
-aesthetic 45.8 -> 62.9. Corrector weights: `../weights/lora_cf_v1.pt` (one-step),
-`../weights/lora_cf_v2_both.pt` (closed-loop, deployed).
+aesthetic 45.8 -> 62.9, dynamic 33.6 -> 70.3. Corrector weights: `../weights/lora_cf_v1.pt`
+(one-step), `../weights/lora_cf_v2_both.pt` (closed-loop, deployed).
+
+Robustness matrix (16 prompts, same pids; MUSIQ/Delta): rolling window (ours) 51.5/+11.07 is
+mid-pack for the base — full KV 46.4/+16.34 (worse; OOD rope beyond the 21-frame trained window),
+sink-3 54.7/+8.48, sink-10 57.2/+5.29, ctx-noise 47.8/+12.59 (worse); corrector 58.8/+3.94;
+corrector+sink-10 59.4/+3.23 (best; complementarity measured). OVERLAP=2 decode cuts the
+chunk-cadence pulse 538 -> 99 with motion/anchoring unchanged. Env knobs in `cf_common.py`:
+ATTN (KV horizon), SINK (sink frames), CTXSIG (context-noise sigma), OVERLAP (seam blend).
 
 ## Files
 - `cf_common.py` — loads the CF generator into our `CausalDiffusionInferencePipeline`
