@@ -18,7 +18,7 @@ huggingface-cli download illustro1/clean-forcing adapted_base_4000.pt --local-di
 ```
 The same repo holds the 14B adapted base (`wan14b_adapted_base_4000.pt`, ~8.4 GB) for the
 scale-transfer appendix. The 1.3B correctors apply to the adapted base; to rebuild it instead:
-**Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Reproduce" section
+**Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Train" section
   (`wan_gen_synthetic.py` then `STEPS=6000 wan_train_adapt.py`; deploy the 4K checkpoint).
 
 ## 3. Demo (5 minutes of GPU)
@@ -41,7 +41,7 @@ LORA=none PROMPT="a corgi surfing a wave at sunset" python demo_generate.py
 | lora_r_phi_sf.pt | Self-Forcing distilled ckpt | NEGATIVE result — damages that host; released for reproducibility only |
 
 ## 5. Full evaluation (reproduces the paper rows)
-See README "Reproduce" step 6: `scripts/eval_corrector_subset.py` (MUSIQ + Delta-drift + videos),
+See the README "Evaluation" section: `scripts/eval_corrector_subset.py` (MUSIQ + Delta-drift + videos),
 `scripts/score_official_6dim.py` (official VBench), `scripts/score_official_semantic.py`,
 `scripts/posthoc_metrics.py`. Prompts: `prompts_finals128.txt` (also at
 `self_forcing/wan_cache/finals128/prompts_used.txt` after eval runs). Verify checkpoints with
