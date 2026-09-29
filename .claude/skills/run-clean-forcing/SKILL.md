@@ -72,4 +72,4 @@ public downloads. Ground rules first, then procedures.
 ## Where deeper context lives
 `RUN.md` (step-by-step human runbook) · `README.md` (method + reproduce) · `paper_tables.md`
 (canonical numbers + provenance) · the paper's App. F (gate / when NOT to correct) and App. B
-(baseline fidelity). Project page: https://wnqw.github.io/clean_forcing_project_page/.
+(baseline fidelity). Project page: https://clean-forcing.github.io/.

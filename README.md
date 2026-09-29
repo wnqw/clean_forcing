@@ -1,6 +1,6 @@
 # Clean Forcing
 
-[Project page](https://wnqw.github.io/clean_forcing_project_page/) · [Paper (PDF)](https://wnqw.github.io/clean_forcing_project_page/static/pdfs/clean_forcing.pdf) · [Checkpoints (HF)](https://huggingface.co/illustro1/clean-forcing) · [Videos & measurements (HF)](https://huggingface.co/datasets/illustro1/clean-forcing-results)
+[Project page](https://clean-forcing.github.io/) · [Paper (PDF)](https://clean-forcing.github.io/static/pdfs/clean_forcing.pdf) · [Checkpoints (HF)](https://huggingface.co/illustro1/clean-forcing) · [Videos & measurements (HF)](https://huggingface.co/datasets/illustro1/clean-forcing-results)
 
 > *"…where, if the first object had not been, the second never had existed."*
 > — David Hume, defining causation by counterfactuals (*An Enquiry Concerning Human Understanding*, 1748)
@@ -112,7 +112,7 @@ base, context noise, history guidance, Self Forcing, ours zero-real, ours +real)
   entry points (`wan_*.py`, root).
 - `scripts/` — evaluation & analysis: subset evaluator, protocol metrics, full-rate re-score,
   paired progression, official VBench scoring (`score_official_6dim.py`, `score_official_semantic.py`), figures.
-- **Paper & project page:** https://wnqw.github.io/clean_forcing_project_page/
+- **Paper & project page:** https://clean-forcing.github.io/
 - `paper_tables.md` — full result tables with provenance (all configs, all protocols, canonical
   metric values behind every paper number).
 
