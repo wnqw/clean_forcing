@@ -1,0 +1,13 @@
+# run outputs (created by the scripts; not tracked)
+self_forcing/wan_cache/
+self_forcing/wan_models/
+cf_external_base/ckpts/
+cf_external_base/finals/
+cf_external_base/sanity/
+cf_external_base/feasibility/
+cf_external_base/pairs_*.pt
+cf_external_base/*.log
+cf_external_base/STATUS.md
+VBench/
+__pycache__/
+*.pyc

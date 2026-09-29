@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # CF-row orchestrator v2 — adopts the already-running dagger build + cfb finals.
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 set -u
-ROW=/localhome/local-wenqingw/projs/benchmarking/cf_row
-SF=/localhome/local-wenqingw/projs/Self-Forcing
-PY=/localhome/local-wenqingw/miniconda3/envs/df-gb300/bin/python
+ROW="${CF_ROW:-$REPO/cf_external_base}"
+SF="${SF_REPO:-$REPO/self_forcing}"
+PY=${PYTHON:-python}
 export PYTHONPATH=$ROW
 cd "$SF" || exit 1
 log() { echo "- $(date -u '+%Y-%m-%d %H:%M') UTC — $*" >> "$ROW/STATUS.md"; echo "[orch2] $*"; }
@@ -34,7 +35,7 @@ log "STAGE V2 DONE ($(grep -oE 'val R.?2? [-+0-9.]+' "$ROW/train_v2.log" | tail 
 TAG=sanity_v2 LORA=$ROW/ckpts/lora_cf_v2_both.pt KLAT=120 N=1 OUTD=$ROW/sanity \
   "$PY" -u "$ROW/cf_finals.py" >> "$ROW/sanity_v2.log" 2>&1
 "$PY" "$ROW/cf_strip.py" "$ROW/sanity/sanity3way_strip.png" \
-  $(ls /localhome/local-wenqingw/projs/benchmarking/cf_feasibility/videos_cf/cf_p000_k120*.mp4 2>/dev/null | head -1) \
+  $(ls "$ROW"/feasibility/cf_p000_k120*.mp4 2>/dev/null | head -1) \
   "$ROW/sanity/sanity_v1final_p000.mp4" $(ls "$ROW/sanity/"sanity_v2*.mp4 2>/dev/null | head -1) \
   >> "$ROW/sanity_v2.log" 2>&1 || true
 log "STAGE SANITY-V2 DONE: sanity/sanity3way_strip.png (EYES-ON: v2 must fix late softness)."
@@ -57,4 +58,4 @@ log "ORCH2: cfb settled ($NB/128). Scoring."
 TAG=cfb N=128 "$PY" -u "$ROW/cf_score.py" >> "$ROW/score_cfb.log" 2>&1; log "SCORE cfb: $(grep RESULT "$ROW/score_cfb.log" | tail -1)"
 TAG=cfc N=128 "$PY" -u "$ROW/cf_score.py" >> "$ROW/score_cfc.log" 2>&1; log "SCORE cfc: $(grep RESULT "$ROW/score_cfc.log" | tail -1)"
 "$PY" -u "$ROW/cf_pulse_prog.py" >> "$ROW/pulse_prog.log" 2>&1; log "PULSE/PROG: $(tail -1 "$ROW/pulse_prog.log")"
-log "ORCH2 COMPLETE — CF row finished. Next: eyes-on sanity strip, paper row, evacuation."
+log "ORCH2 COMPLETE — CF row finished. Next: sanity strip and paper row."

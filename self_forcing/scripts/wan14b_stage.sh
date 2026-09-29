@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Stage launcher for the Wan2.1-14B reduced-protocol scale-up.
 #   wan14b_stage.sh <stage-name> <command...>
-# Waits until the GPU is actually FREE (no compute processes AND no safe_run slots) per the
-# owner's coordination rule, then runs the command through safe_run.sh (slot lock, health
+# Waits until the GPU is actually FREE (no compute processes AND no safe_run slots) , then runs the command (optionally through SAFE_RUN) (slot lock, health
 # probe, thread caps). Retries on safe_run REFUSED. Caller detaches via setsid.
-cd "${WORKDIR:-/localhome/local-wenqingw/projs/Self-Forcing}" || exit 1
-SAFE=/localhome/local-wenqingw/projs/drift_correction/scripts/safe_run.sh
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
+cd "${WORKDIR:-$REPO/self_forcing}" || exit 1
+SAFE=${SAFE_RUN:-}   # optional GPU-slot wrapper from the original cluster; unset = run directly
 NAME=$1; shift
 
 wait_gpu_free() {
@@ -23,7 +23,7 @@ tries=0
 while true; do
   wait_gpu_free
   echo "=== [$(date '+%F %T')] stage $NAME attempt $((tries + 1)) ==="
-  "$SAFE" "$@"
+  ${SAFE:+"$SAFE"} "$@"
   st=$?
   [ $st -eq 0 ] && { echo "=== [$(date '+%F %T')] stage $NAME OK ==="; exit 0; }
   if [ $st -eq 3 ] || [ $st -eq 4 ]; then

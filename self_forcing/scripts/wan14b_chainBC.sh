@@ -4,10 +4,11 @@
 #      -> in-domain 2x2 (bar: >= 40% sat-drift cut on adapted host)
 #   C: OOD 32-prompt subset (2 arms, 50 s) -> MUSIQ/posthoc scoring -> official VBench rows
 # Waits for chain A's stage-2 kill-bar JSON (unseeded check) and its PASS + deploy-select.
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 set -u
-cd /localhome/local-wenqingw/projs/Self-Forcing || exit 1
+cd "${SF_REPO:-$REPO/self_forcing}" || exit 1
 S=scripts/wan14b_stage.sh
-PY=/localhome/local-wenqingw/miniconda3/envs/df-gb300/bin/python
+PY=${PYTHON:-python}
 J=wan_cache/wan14b_unseeded.json
 
 echo "[chainBC] waiting for stage-2 kill-bar result ($J)"
@@ -44,7 +45,7 @@ echo "[chainBC] stage-5 kill bar (>=40% cut on adapted host): $BAR5"
 "$S" ood_abase env ADAPTED_BASE="$AB" ARM=abase "$PY" -u wan14b_ood_gen.py || exit 1
 "$S" ood_av2 env ADAPTED_BASE="$AB" ARM=av2 "$PY" -u wan14b_ood_gen.py || exit 1
 "$S" ood_score "$PY" -u wan14b_ood_score.py || exit 1
-SF=/localhome/local-wenqingw/projs/Self-Forcing
+SF="${SF_REPO:-$REPO/self_forcing}"
 WORKDIR=/tmp "$SF/$S" vb_abase14 "$PY" -u "$SF/wan14b_score_official.py" --tag abase14
 WORKDIR=/tmp "$SF/$S" vb_av2_14 "$PY" -u "$SF/wan14b_score_official.py" --tag av2_14
 echo "=== [$(date '+%F %T')] chain B+C complete ==="

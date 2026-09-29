@@ -46,7 +46,7 @@ diffs; not comparable to 16 fps rows). Error bars = SEM over 128 prompts.
 **Drift ordering**: HG +20.5 > TTC +14.0/+14.5 > DF-σ +12.1 > abase +11.3 > BAgger-base† +7.3 > R3† +3.6 >
 av2s +1.65 ≈ SF +1.08 ≈ SkyReels +1.00 > av2 −0.16. All four training-free interventions worsen drift; av2
 beats SF by >3 SEM; av2s statistically ties SF/SkyReels with zero real videos; ours leads aesthetic, beats
-R3/SkyReels on imaging, at ~1/1000th their data. Known weakness: smoothness 89 vs 95–99 (chunk seams; §limitations).
+R3/SkyReels on imaging, with over 150× less data. Known weakness: smoothness 89 vs 95–99 (chunk seams; §limitations).
 (av1s @128p, for T3: 77.2/83.8/55.7/62.2/91.0/38.3 · MUSIQ 61.9 · Δ +4.77)
 
 ## T2 — In-domain 2×2 (5 held-out Disney clips × 3 seeds, paired; sat-drift ↓ / MUSIQ_late ↑)
@@ -128,7 +128,7 @@ base 24.1 s — different batch/software state) superseded; confirmed run varian
 Functional equivalence verified (latent MAD 0.108 = bf16 rounding through chaotic recurrence).
 
 ## T9 — Gate diagnostic α*(t)
-α*(t)=‖bias‖²/(‖bias‖²+var), M=4 seeds, 20 steps: **0.91–0.99 at every t** (~95% systematic). Closed-loop
+α*(t)=‖bias‖²/(‖bias‖²+var), M=4 seeds, 20 steps: **0.89–0.99 at every t** (~95% systematic). Closed-loop
 gated ≡ flat (0.133 vs 0.131) → gate = diagnostic justifying full correction on this host.
 
 ## T10 — Do-no-harm 5 s (AutoRefiner protocol, 200 VBench prompts; ours = merged av2s)

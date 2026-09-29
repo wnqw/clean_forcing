@@ -32,7 +32,7 @@ ATTN (KV horizon), SINK (sink frames), CTXSIG (context-noise sigma), OVERLAP (se
 - Their README gives no inference config ("inference environment is identical to Self
   Forcing"); we run rolling 21-frame KV, sink 0, 20-step UniPC — the same locked protocol
   as every other row. The base is teacher-forcing trained (never conditioned on its own
-  outputs during training), which is why it is sharp early (first-20% MUSIQ 71-74) and
+  outputs during training), which is why it is sharp early (first-20% MUSIQ ≈64) and
   collapses by ~10-15 s in self-rollout.
 - Robustness matrix (`orchestrate_cf4.sh`): full-KV / sink-3 / sink-10 subsets bound the
   protocol effect on the base's numbers.

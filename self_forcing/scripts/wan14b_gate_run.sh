@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 # Detached driver for the Wan2.1-T2V-14B viability gate (gate only, NO training).
-# Stages are resumable; every GPU stage goes through drift_correction's safe_run.sh
+# Stages are resumable; every GPU stage goes through an optional safe_run.sh wrapper (SAFE_RUN)
 # (slot locks, driver-health probe, thread caps). Queues (retries) while slots are busy.
-cd /localhome/local-wenqingw/projs/Self-Forcing || exit 1
-SAFE=/localhome/local-wenqingw/projs/drift_correction/scripts/safe_run.sh
-PY=/localhome/local-wenqingw/miniconda3/envs/df-gb300/bin/python
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
+cd "${SF_REPO:-$REPO/self_forcing}" || exit 1
+SAFE=${SAFE_RUN:-}   # optional GPU-slot wrapper from the original cluster; unset = run directly
+PY=${PYTHON:-python}
 
 run_stage() {
   local name=$1; shift
   local tries=0
   while true; do
     echo "=== [$(date '+%F %T')] stage $name attempt $((tries + 1)) ==="
-    "$SAFE" "$PY" -u "$@"
+    ${SAFE:+"$SAFE"} "$PY" -u "$@"
     local st=$?
     [ $st -eq 0 ] && { echo "=== stage $name OK ==="; return 0; }
     if [ $st -eq 3 ] || [ $st -eq 4 ]; then   # safe_run REFUSED: load / slots busy -> queue

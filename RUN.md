@@ -1,22 +1,23 @@
-# RUN.md — running Clean Forcing after the internship handoff
+# RUN.md — running Clean Forcing
 
-Written for NVIDIA colleagues (Luke et al.) so everything here runs without the original
-author's compute or accounts. One A100/H100-class GPU (>=48 GB), bf16.
+Step-by-step runbook for reproducing the paper with the released code and checkpoints.
+One A100/H100-class GPU (>=48 GB), bf16.
 
 ## 1. Setup (once)
 ```bash
 bash SETUP.sh          # conda env + deps + public Wan2.1-T2V-1.3B download
 ```
 
-## 2. Get the adapted base (the one non-public artifact)
-The 1.3B correctors apply to OUR causally-adapted base (`adapted_base_4000.pt`, ~2.8 GB, too big
-for git). Two options:
-- **Download**: from the evacuation bundle — private HF dataset
-  `illustro1/clean-forcing-evacuation` (path `adapted_bases/adapted_base_4000.pt`; ask the
-  author for access; hash-verify with `bundle_meta/SHA256SUMS_tierA`). Also there: all
-  finals videos (`finals128/`, 13 systems), CF-row artifacts, pair pools, gates.
-  NOTE for any public/review re-release: strip this account-linked pointer first.
-  Place at `self_forcing/wan_cache/adapted_base_4000.pt`.
+## 2. Get the adapted base
+The 1.3B correctors apply to our causally-adapted base (`adapted_base_4000.pt`, ~0.57 GB).
+Two options:
+- **Download** from the public Hugging Face model repo
+  [`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing):
+  ```bash
+  huggingface-cli download illustro1/clean-forcing adapted_base_4000.pt --local-dir self_forcing/wan_cache
+  ```
+  The same repo holds the 14B adapted base (`wan14b_adapted_base_4000.pt`, ~8.4 GB) used by the
+  scale-transfer appendix. `sha256sum -c SHA256SUMS` there verifies both files.
 - **Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Reproduce" section
   (`wan_gen_synthetic.py` then `STEPS=6000 wan_train_adapt.py`; deploy the 4K checkpoint).
 
@@ -36,7 +37,7 @@ LORA=none PROMPT="a corgi surfing a wave at sunset" python demo_generate.py
 | lora_r_phi_k48_adapt_r{8,32,64}.pt | adapted_base_4000.pt | rank sweep (set RANK env) |
 | lora_r_phi_k48.pt / lora_r_phi_v2_both.pt | raw Wan2.1-T2V-1.3B (no adaptation) | in-domain 2x2 unadapted row |
 | lora_cf_v1.pt / lora_cf_v2_both.pt | zhuhz22/Causal-Forcing `chunkwise/ar_diffusion.pt` (public; load `ckpt["generator"]`) | external-base rows; our protocol = rolling 21-frame KV window, 20-step UniPC |
-| wan14b_lora_v1.pt / wan14b_lora_v2_valpeak.pt | Wan2.1-T2V-14B + its rank-64 adaptation (evacuation bundle) | scale-transfer appendix |
+| wan14b_lora_v1.pt / wan14b_lora_v2_valpeak.pt | Wan2.1-T2V-14B + its rank-64 adaptation (`wan14b_adapted_base_4000.pt`, HF above) | scale-transfer appendix |
 | lora_r_phi_sf.pt | Self-Forcing distilled ckpt | NEGATIVE result — damages that host; released for reproducibility only |
 
 ## 5. Full evaluation (reproduces the paper rows)

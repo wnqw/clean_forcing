@@ -19,9 +19,11 @@ import timm
 import torch
 import torch.nn.functional as F
 
-ROW = "/localhome/local-wenqingw/projs/benchmarking/cf_row"
+_HERE = os.path.dirname(os.path.abspath(__file__))
+ROW = os.environ.get("CF_ROW", _HERE)
+SF_REPO = os.environ.get("SF_REPO", os.path.join(os.path.dirname(_HERE), "self_forcing"))
 D = os.environ.get("OUTD", os.path.join(ROW, "finals"))
-SF_LATE = "/localhome/local-wenqingw/projs/Self-Forcing/wan_cache/finals128/sfd_dino_latesim.npy"
+SF_LATE = os.environ.get("SF_LATE", os.path.join(SF_REPO, "wan_cache/finals128/sfd_dino_latesim.npy"))
 TAG = os.environ.get("TAG", "cfb")
 N = int(os.environ.get("N", 128))
 LAG = 12

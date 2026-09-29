@@ -87,7 +87,7 @@ def premise_figure():
 def scaling_figure():
     """Host adaptation scaling (same-16, uncorrected base): quality is not saturated at 20K,
     and the 14K->20K late jump shows adaptation is a real lever - yet the 4K host + corrector
-    (66.9) beats every point on this curve at ~1/1000 the training data."""
+    (66.9) beats every point on this curve with a small fraction of the training data."""
     steps = np.array([4, 8, 14, 20])
     musiq = np.array([44.8, 48.1, 48.9, 57.8])
     delta = np.array([11.27, 11.72, 12.73, 9.68])

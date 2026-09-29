@@ -2,6 +2,7 @@
 
 All correctors apply to a FROZEN base at scale 1 (merge for zero overhead).
 Verify integrity: `sha256sum -c SHA256SUMS`.
+The adapted bases these LoRAs apply to (1.3B and 14B) are on Hugging Face: [`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing).
 
 ## Wan2.1-T2V-1.3B, our causally-adapted host (paper Tables 1–2)
 | file | paper name | notes |
@@ -23,7 +24,7 @@ Verify integrity: `sha256sum -c SHA256SUMS`.
 | file | paper name |
 |---|---|
 | lora_cf_v1.pt | one-step on the Causal-Forcing base (zhuhz22/Causal-Forcing, Apache-2.0) |
-| lora_cf_v2_both.pt | closed-loop (added when training completes) |
+| lora_cf_v2_both.pt | closed-loop on the Causal-Forcing base |
 
 ## Negative-result port (paper Appendix, "when not to correct")
 | file | notes |

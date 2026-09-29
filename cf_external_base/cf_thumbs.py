@@ -1,8 +1,8 @@
-"""Ranked pair thumb sheets for owner qualitative picks.
+"""Ranked pair thumb sheets for picking qualitative examples.
 
 Ranks prompts by corrector advantage (cfc_late - cfb_late MUSIQ), takes the top N,
 and writes sheets of interleaved cfb/cfc contact-strip rows (base above, corrected
-below, same prompt) so the owner can pick paper-figure pairs fast.
+below, same prompt) for picking paper-figure pairs.
 
 Usage: python cf_thumbs.py   (writes thumbs/pairsheet_{i}.png + thumbs/ranking.txt)
 """

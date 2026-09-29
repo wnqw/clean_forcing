@@ -2,11 +2,12 @@
 # ORCH3: post-finals scoring chain — pulse/prog (fixed invocation) -> VBench 6-dim
 # -> semantic 2-dim -> ranked pair thumb sheets. Disk-chained, resumable-ish
 # (VBench table.json accumulates; rerunning a done tag re-scores, so guard on table keys).
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 set -u
-ROW="/localhome/local-wenqingw/projs/benchmarking/cf_row"
-SF="/localhome/local-wenqingw/projs/Self-Forcing"
-DC="/localhome/local-wenqingw/projs/drift_correction"
-PY="/localhome/local-wenqingw/miniconda3/envs/df-gb300/bin/python"
+ROW="${CF_ROW:-$REPO/cf_external_base}"
+SF="${SF_REPO:-$REPO/self_forcing}"
+DC="$REPO"
+PY=${PYTHON:-python}
 cd "$ROW"  # neutral cwd for VBench (NOT Self-Forcing/)
 
 log() { echo "- $(date -u '+%Y-%m-%d %H:%M') UTC — $1" >> "$ROW/STATUS.md"; }

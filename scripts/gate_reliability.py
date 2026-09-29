@@ -11,7 +11,7 @@ rho(t) is measured with EXACTLY the wan_train_v2.py validation quantity
 just accumulated per timestep bin instead of pooled:
     rho(t) = 1 - sum ||v_corr - v_clean||^2 / sum ||v_clean - v_base||^2
 
-Usage (from Self-Forcing/, conda env df-gb300, via safe_run.sh):
+Usage (from self_forcing/):
   LORA=wan_cache/lora_r_phi_v2s_adapt.pt POOLS=pairs_synth_adapt.pt,pairs_synth_dagger_adapt.pt \
   K=21 TAG=av2s SPT=8 python -u gate_reliability.py
 

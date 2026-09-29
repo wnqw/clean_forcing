@@ -1,11 +1,11 @@
 """Stage 6c: official VBench custom-input scoring for the 14B OOD arms (32-video rows).
 
-Variant of drift_correction/scripts/score_official_6dim.py: same VBench install + decord shim +
+Variant of scripts/score_official_6dim.py: same VBench install + decord shim +
 calibration constants, but N=32 videos from wan_cache/wan14b_ood/ and results in a SEPARATE tree
 (Self-Forcing/vbench_wan14b/) so the locked finals tables are untouched. Adds
 temporal_flickering as the flicker guard row (raw x100, uncalibrated -- higher = less flicker).
 Must run from a neutral cwd (NOT Self-Forcing/) in a fresh process:
-  cd /tmp && python /localhome/.../Self-Forcing/wan14b_score_official.py --tag abase14
+  cd /tmp && VBENCH_DIR=/path/to/VBench python /path/to/repo/self_forcing/wan14b_score_official.py --tag abase14
 """
 import argparse
 import glob
@@ -14,8 +14,8 @@ import os
 import sys
 
 os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
-SF = "/localhome/local-wenqingw/projs/Self-Forcing"
-VB = "/localhome/local-wenqingw/projs/drift_correction/benchmarks/vbenchs/VBench"
+SF = os.path.dirname(os.path.abspath(__file__))
+VB = os.environ.get("VBENCH_DIR", "./VBench")
 sys.path.insert(0, VB)
 sys.path.insert(0, SF)
 import vbench_decord_shim  # noqa: E402

@@ -57,7 +57,7 @@ starting points; re-verify on your own hardware before publishing new numbers.
   (-77%), MUSIQ 52.0 -> 62.1, VBench subject/background/aesthetic recover to primary-system
   parity — with zero host modification and zero per-host tuning (36 h single shot).
 - That base is teacher-forcing trained (never conditioned on its own outputs): sharpest
-  early frames of any host we measured (first-20% MUSIQ 71-74) AND the fastest collapse
+  early frames of any host we measured (first-20% MUSIQ ≈64) AND the fastest collapse
   (~10-15 s). Short-horizon quality and rollout robustness are different axes set by the
   training objective; don't infer one from the other, and don't compare VBench numbers
   across papers' protocols (short-horizon/saturated dims mislead).

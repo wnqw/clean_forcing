@@ -1,17 +1,19 @@
 # Clean Forcing
 
+[Project page](https://wnqw.github.io/clean_forcing_project_page/) · [Paper (PDF)](https://wnqw.github.io/clean_forcing_project_page/static/pdfs/clean_forcing.pdf)
+
 > *"…where, if the first object had not been, the second never had existed."*
 > — David Hume, defining causation by counterfactuals (*An Enquiry Concerning Human Understanding*, 1748)
 
 **Drift-resistant autoregressive video diffusion with a frozen base.** A 5.9M-parameter LoRA
-corrector removes long-horizon drift from an AR video diffusion model at ~1/400th the data of
+corrector removes long-horizon drift from an AR video diffusion model with over 150× less data than
 corrective retraining, trainable with **zero real videos**, merging into the weights at **zero
 inference cost**.
 
 ## Why this method
 
 - **Zero real videos, ~1 GPU-day per host** — trains from the model's own counterfactual predictions;
-  no data pipeline, licensing, or curation. ~1/400th the data (and far less compute) of corrective
+  no data pipeline, licensing, or curation. Over 150× less data (and far less compute) than corrective
   retraining (BAgger-class).
 - **Non-invasive** — the base stays frozen; `corrector=None` is byte-identical to stock behavior.
   Merges into the weights at **zero inference cost**.
@@ -29,7 +31,7 @@ AR video diffusion drifts: conditioning on self-generated history pulls rollouts
 (saturation runaway, texture death). We measure that this drift is a **~95% systematic velocity
 error**: at the *same* noisy state `z_t`, the gap between the model's prediction under drifted
 history and under clean history is reproducible across noise seeds (Drift-SNR
-`α*(t) = ‖bias‖²/(‖bias‖²+var) ∈ [0.91, 0.99]` at every noise level). A systematic error is a
+`α*(t) = ‖bias‖²/(‖bias‖²+var) ∈ [0.89, 0.99]` at every noise level). A systematic error is a
 learnable map.
 
 The full method in one picture — counterfactual teacher (shared `z_t`, history swapped), closed-loop
@@ -72,27 +74,24 @@ pass (zero inference overhead, ΔNFE = 0). The measured `α*(t)` profile is the 
 host it is flat (≈0.95 ∀t), so the gate is the *diagnostic justifying* full correction; on hosts with
 non-flat `α*(t)` (e.g. distilled world models) it becomes a live per-step gain schedule.
 
-Geometrically: both teacher and student are evaluated at the **same anchor state** `z_t`; the two
-velocity fields (clean-history vs drifted-history) disagree by the drift residual, and the
-corrector learns exactly that gap:
-
-![ODE anchor illustration](assets/ode_anchor_illustration.png)
+Geometrically (panel 1 above): both teacher and student are evaluated at the **same anchor state**
+`z_t`; the two velocity fields (clean-history vs drifted-history) disagree by the drift residual,
+and the corrector learns exactly that gap.
 
 **Headline (128 MovieGen prompts, un-seeded 50 s T2V):** Δ-drift +11.27 (host) → **+1.65 zero-real
 / −0.16 with 40 real clips**; leads all compared systems on aesthetic quality **and prompt adherence
 (VBench overall consistency 70.28 — top of all 9 systems; drift destroys text alignment, correction
-restores it)**; horizon-flat under 10/30/50 s truncation; below BAgger R3's +3.57 at ~400x less data.
+restores it)**; horizon-flat under 10/30/50 s truncation; below BAgger R3's +3.57 with over 150× less data.
 Rank sweep: open-loop fit is flat in rank (r8–r64) while rollout quality peaks at r16 — the low-rank
 constraint is itself the stability regularizer; correction leaves inter-seed diversity unchanged. Known, measured trade: drift removal and
-scene progression are the same optimization for past-anchored correctors (paper §4.6).
+scene progression are the same optimization for past-anchored correctors (paper appendix).
 
 ## Qualitative comparisons
 
-Same weights, same prompt, three behaviors — the premise: the single-shot (bidirectional)
-generation stays clean, the AR rollout of the *identical* checkpoint collapses (drift is in the
-rollout dynamics, not the weights), and the corrector removes exactly that gap:
+The same frozen base before and after correction: the adapted AR rollout (top) saturates and
+loses the scene, while the same model with the merged corrector (bottom) keeps it:
 
-![premise](assets/premise.png)
+![teaser](assets/teaser.jpg)
 
 Frame strips over the full 50 s horizon, matched prompts and seeds (rows top→bottom: adapted
 base, context noise, history guidance, Self Forcing, ours zero-real, ours +real):
@@ -112,8 +111,8 @@ base, context noise, history guidance, Self Forcing, ours zero-real, ours +real)
   α*(t) gate, overlap/TTC/HG experiment modes), LoRA (`wan/modules/lora.py`), and all training
   entry points (`wan_*.py`, root).
 - `scripts/` — evaluation & analysis: subset evaluator, protocol metrics, full-rate re-score,
-  paired progression, figures, supplementary builder.
-- **Paper:** under double-blind review (ICLR 2027 submission).
+  paired progression, official VBench scoring (`score_official_6dim.py`, `score_official_semantic.py`), figures.
+- **Paper & project page:** https://wnqw.github.io/clean_forcing_project_page/
 - `paper_tables.md` — full result tables with provenance (all configs, all protocols, canonical
   metric values behind every paper number).
 
@@ -228,3 +227,20 @@ adapted base, context noise, history guidance, Self Forcing, ours zero-real, our
 ![comparison frames p032](assets/comparison_frames_p032.jpg)
 
 ![comparison frames p030](assets/comparison_frames_p030.jpg)
+
+## License
+
+Code is released under the Apache License 2.0 (`LICENSE`). `self_forcing/` is a modified copy of
+[Self-Forcing](https://github.com/guandeh17/Self-Forcing) and keeps its Apache-2.0 license; the Wan2.1
+base models and the Causal-Forcing checkpoint are distributed by their authors under Apache-2.0.
+
+## Citation
+
+```bibtex
+@article{wang2026cleanforcing,
+  title={Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base},
+  author={Wang, Wenqing and Shin, Joonghyuk and Tremblay, Jonathan and Song, Chan Hee and Fu, Yun},
+  journal={arXiv preprint},
+  year={2026}
+}
+```

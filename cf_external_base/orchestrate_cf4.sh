@@ -1,15 +1,16 @@
 #!/bin/bash
-# ORCH4: CF-base inference-robustness matrix (Joonghyuk 8/26) — waits for ORCH3
+# ORCH4: CF-base inference-robustness matrix — waits for ORCH3
 # COMPLETE, then runs 16-prompt 50s cfb subsets under alternative inference configs:
 #   cfbfull   ATTN=201 (naive full KV cache, no eviction over the whole horizon)
 #   cfbsink3  SINK=3   (sliding window + first-chunk attention sink)
 #   cfbsink10 SINK=10  (sliding window + half-window sink, Deep-Forcing-style budget)
 # Our-protocol row = finals/cfb_p000..015 (already generated). Authors' README defers
 # to Self-Forcing inference (verified 8/27) — no author-recommended config exists.
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 set -u
-ROW="/localhome/local-wenqingw/projs/benchmarking/cf_row"
-PY="/localhome/local-wenqingw/miniconda3/envs/df-gb300/bin/python"
-cd /localhome/local-wenqingw/projs/Self-Forcing
+ROW="${CF_ROW:-$REPO/cf_external_base}"
+PY=${PYTHON:-python}
+cd "${SF_REPO:-$REPO/self_forcing}"
 
 log() { echo "- $(date -u '+%Y-%m-%d %H:%M') UTC — $1" >> "$ROW/STATUS.md"; }
 

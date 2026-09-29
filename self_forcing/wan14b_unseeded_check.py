@@ -2,7 +2,7 @@
 
 Arms: unadapted base + each wan14b_adapted_base_{2000,4000,6000}.pt. Per arm: NPROMPT un-seeded
 K=21 rollouts (the trained window; the bar is "no collapse within the 21-latent window").
-Automated collapse metrics per video (strips saved for the owner eyeball):
+Automated collapse metrics per video (strips saved for visual inspection):
   sat_ramp  = mean sat(last 8 frames) - mean sat(first 8)   (unadapted 14B collapse: +0.28 mean)
   lowstd    = frac of frames with pixel std < 0.05           (flat-color collapse detector)
   musiq_late= mean MUSIQ over last 16 frames                 (quality; deploy-select tie-break)

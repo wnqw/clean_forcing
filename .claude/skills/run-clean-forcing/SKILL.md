@@ -1,16 +1,15 @@
 ---
 name: run-clean-forcing
-description: Operate the Clean Forcing repo end-to-end — env setup, demo generation, corrector training, paper-protocol evaluation, and user-study reproduction — after the original author's departure. Use whenever asked to run, evaluate, retrain, or extend Clean Forcing / the drift-corrector LoRAs in this repo.
+description: Operate the Clean Forcing repo end-to-end — env setup, demo generation, corrector training, paper-protocol evaluation, and user-study reproduction. Use whenever asked to run, evaluate, retrain, or extend Clean Forcing / the drift-corrector LoRAs in this repo.
 ---
 
 # Running Clean Forcing (agent runbook)
 
-You are operating a research codebase whose author has left. Everything needed is in this repo
-plus public downloads; the human you assist is a coauthor (e.g., Luke). Ground rules first,
-then procedures.
+You are operating the Clean Forcing research codebase. Everything needed is in this repo plus
+public downloads. Ground rules first, then procedures.
 
 ## Ground rules (inherited from the project, do not relax)
-1. **Phantom-numbers rule**: never report a number you cannot point to in a file on disk you
+1. **Provenance rule**: never report a number you cannot point to in a file on disk you
    just produced or verified. Every paper number's provenance is in `paper_tables.md`.
 2. **Method name**: "Clean Forcing" — never abbreviate, never "Counterfactual Forcing" (dead name).
    Corrector stages are "one-step" and "closed-loop" (code may say v1/v2 — same objects).
@@ -33,9 +32,9 @@ then procedures.
 - `weights/` — 13+ released corrector LoRAs + SHA256SUMS. The checkpoint->base map is in
   `RUN.md` section 4. Two fully-public-runnable rows: `lora_cf_v1.pt` / `lora_cf_v2_both.pt`
   on the Causal-Forcing base (`hf download zhuhz22/Causal-Forcing`, load `ckpt["generator"]`).
-- The 1.3B adapted base (`adapted_base_4000.pt`, ~2.8 GB) is NOT in git: fetch from the
-  evacuation bundle link in `RUN.md` section 2, or reproduce in ~1 GPU-day (README "Reproduce"
-  steps 1-2; zero real videos needed).
+- The 1.3B adapted base (`adapted_base_4000.pt`, ~0.57 GB) is NOT in git: download it from the
+  public HF repo `illustro1/clean-forcing` (`RUN.md` section 2), or reproduce in ~1 GPU-day
+  (README "Reproduce" steps 1-2; zero real videos needed).
 - `cf_external_base/` — complete external-base runbook (Causal Forcing): pair build,
   both training stages, finals, scoring, and the exact orchestrator scripts used; its
   README carries the result summary and protocol footnotes.
@@ -50,7 +49,7 @@ then procedures.
 - **Paper-protocol eval**: README "Reproduce" step 6 — `scripts/eval_corrector_subset.py`
   (MUSIQ + Delta-drift + videos), then `scripts/score_official_6dim.py` and
   `scripts/score_official_semantic.py` (official VBench), `scripts/posthoc_metrics.py`
-  (anchoring/lag-identity/cuts). Delta-drift saturates at long horizons — always report
+  (anchoring/lag-identity/cuts); set `VBENCH_DIR` to your VBench checkout. Delta-drift saturates at long horizons — always report
   absolute MUSIQ alongside it.
 - **Retrain a corrector** (new data/host): README "Reproduce" steps 3-5. One-step first
   (~800-1500 steps, LR 5e-4, gap-normalized loss; expect val R^2 ~0.4-0.55), then DAgger
@@ -72,5 +71,4 @@ then procedures.
 ## Where deeper context lives
 `RUN.md` (step-by-step human runbook) · `README.md` (method + reproduce) · `paper_tables.md`
 (canonical numbers + provenance) · the paper's App. F (gate / when NOT to correct) and App. B
-(baseline fidelity). For access to the working repo (drift_correction: full result docs,
-HANDOFF.md), ask the author for collaborator access to the private GitHub.
+(baseline fidelity). Project page: https://wnqw.github.io/clean_forcing_project_page/.
