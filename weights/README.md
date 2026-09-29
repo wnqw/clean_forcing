@@ -2,7 +2,8 @@
 
 All correctors apply to a FROZEN base at scale 1 (merge for zero overhead).
 Verify integrity: `sha256sum -c SHA256SUMS`.
-The adapted bases these LoRAs apply to (1.3B and 14B) are on Hugging Face: [`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing).
+The `.pt` files are hosted on Hugging Face ([`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing)), together with the adapted bases they apply to. From the repo root:
+`huggingface-cli download illustro1/clean-forcing --include "weights/*" --local-dir .`
 
 ## Wan2.1-T2V-1.3B, our causally-adapted host (paper Tables 1–2)
 | file | paper name | notes |

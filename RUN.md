@@ -8,17 +8,17 @@ One A100/H100-class GPU (>=48 GB), bf16.
 bash SETUP.sh          # conda env + deps + public Wan2.1-T2V-1.3B download
 ```
 
-## 2. Get the adapted base
-The 1.3B correctors apply to our causally-adapted base (`adapted_base_4000.pt`, ~0.57 GB).
-Two options:
-- **Download** from the public Hugging Face model repo
-  [`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing):
-  ```bash
-  huggingface-cli download illustro1/clean-forcing adapted_base_4000.pt --local-dir self_forcing/wan_cache
-  ```
-  The same repo holds the 14B adapted base (`wan14b_adapted_base_4000.pt`, ~8.4 GB) used by the
-  scale-transfer appendix. `sha256sum -c SHA256SUMS` there verifies both files.
-- **Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Reproduce" section
+## 2. Get the checkpoints (corrector LoRAs + adapted base)
+All checkpoints are on the public Hugging Face model repo
+[`illustro1/clean-forcing`](https://huggingface.co/illustro1/clean-forcing). From the repo root:
+```bash
+huggingface-cli download illustro1/clean-forcing --include "weights/*" --local-dir .   # 14 LoRAs -> weights/ (576 MB)
+huggingface-cli download illustro1/clean-forcing adapted_base_4000.pt --local-dir self_forcing/wan_cache   # 0.57 GB
+(cd weights && sha256sum -c SHA256SUMS)
+```
+The same repo holds the 14B adapted base (`wan14b_adapted_base_4000.pt`, ~8.4 GB) for the
+scale-transfer appendix. The 1.3B correctors apply to the adapted base; to rebuild it instead:
+**Reproduce (~1 GPU-day, zero real videos)**: steps 1–2 of the README "Reproduce" section
   (`wan_gen_synthetic.py` then `STEPS=6000 wan_train_adapt.py`; deploy the 4K checkpoint).
 
 ## 3. Demo (5 minutes of GPU)
@@ -45,7 +45,7 @@ See README "Reproduce" step 6: `scripts/eval_corrector_subset.py` (MUSIQ + Delta
 `scripts/score_official_6dim.py` (official VBench), `scripts/score_official_semantic.py`,
 `scripts/posthoc_metrics.py`. Prompts: `prompts_finals128.txt` (also at
 `self_forcing/wan_cache/finals128/prompts_used.txt` after eval runs). Verify checkpoints with
-`sha256sum -c weights/SHA256SUMS`.
+`(cd weights && sha256sum -c SHA256SUMS)` after the download in section 2.
 
 ## 6. User study reproduction
 `user_study/analysis.py --responses user_study/responses_anonymized.csv` reproduces the paper's

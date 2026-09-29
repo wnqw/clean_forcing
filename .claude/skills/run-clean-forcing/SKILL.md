@@ -29,7 +29,8 @@ public downloads. Ground rules first, then procedures.
 - `TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1` warnings are expected; not a bug.
 
 ## Artifact map
-- `weights/` — 13+ released corrector LoRAs + SHA256SUMS. The checkpoint->base map is in
+- `weights/` — the 14 corrector LoRAs, downloaded from the HF repo `illustro1/clean-forcing` (`RUN.md` section 2),
+  with `README.md` + SHA256SUMS kept in git. The checkpoint->base map is in
   `RUN.md` section 4. Two fully-public-runnable rows: `lora_cf_v1.pt` / `lora_cf_v2_both.pt`
   on the Causal-Forcing base (`hf download zhuhz22/Causal-Forcing`, load `ckpt["generator"]`).
 - The 1.3B adapted base (`adapted_base_4000.pt`, ~0.57 GB) is NOT in git: download it from the

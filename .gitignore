@@ -11,3 +11,4 @@ cf_external_base/STATUS.md
 VBench/
 __pycache__/
 *.pyc
+weights/*.pt
