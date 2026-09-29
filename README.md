@@ -12,7 +12,7 @@ inference cost**.
 
 ## Why this method
 
-- **Zero real videos, ~1 GPU-day per host** — trains from the model's own counterfactual predictions;
+- **Zero real videos, \~1 GPU-day per host** — trains from the model's own counterfactual predictions;
   no data pipeline, licensing, or curation. Over 150× less data (and far less compute) than corrective
   retraining (BAgger-class).
 - **Non-invasive** — the base stays frozen; `corrector=None` is byte-identical to stock behavior.
@@ -22,13 +22,13 @@ inference cost**.
   one do-not-correct case).
 - **Scales with the host** — the identical recipe transfers unchanged to Wan2.1-14B (10x params):
   32-prompt OOD 50 s: **Δ-drift −94% (+15.65 → +0.97), MUSIQ 46.4 → 69.0**, official VBench improves
-  on every dimension at unchanged dynamic degree (~3 GPU-days end-to-end; paper appendix
+  on every dimension at unchanged dynamic degree (\~3 GPU-days end-to-end; paper appendix
   "Scale transfer").
 
 ## Idea
 
 AR video diffusion drifts: conditioning on self-generated history pulls rollouts off-manifold
-(saturation runaway, texture death). We measure that this drift is a **~95% systematic velocity
+(saturation runaway, texture death). We measure that this drift is a **\~95% systematic velocity
 error**: at the *same* noisy state `z_t`, the gap between the model's prediction under drifted
 history and under clean history is reproducible across noise seeds (Drift-SNR
 `α*(t) = ‖bias‖²/(‖bias‖²+var) ∈ [0.89, 0.99]` at every noise level). A systematic error is a
@@ -45,7 +45,7 @@ rolling 21-frame KV cache, CFG 6 / shift 8. For un-seeded T2V the raw bidirectio
 sampling), LoRA r64 merged into the base, 6K steps × batch 1 on the 300 synthetic clips
 (4K-step checkpoint deployed) — `wan_train_adapt.py`.
 
-**Corrector r_φ (v1 — counterfactual teacher).** LoRA r16 on self-attn q/k/v/o = 5.9M params (~0.4%),
+**Corrector r_φ (v1 — counterfactual teacher).** LoRA r16 on self-attn q/k/v/o = 5.9M params (\~0.4%),
 zero-init `B` (starts as an exact identity), runtime-scalable. With `z_t = (1−σ_t)·x0 + σ_t·ε`,
 current chunk `x0 = gen[k:k+3]`, drifted history `h_gen = gen[k−9:k]`, clean counterpart history
 `h_clean` (same positions, reference clip):
@@ -193,14 +193,14 @@ chunk. Train:
 
 i.e., the same gap-normalized matched-state velocity loss as r_φ, with the teacher pass at EMA weights and the
 true clip as h_clean (no synthetic refs needed — training data exists here). Optional v2-style contraction:
-commit x̂0 = z_t − σ_t·v_θ into the next chunk's history with grad and penalize that chunk's gap (weight ~0.5).
+commit x̂0 = z_t − σ_t·v_θ into the next chunk's history with grad and penalize that chunk's gap (weight \~0.5).
 
 **Cost control.** Rollouts amortize through a replay buffer: refresh each clip's h_gen every R optimizer steps
 on async inference workers (actor/learner split); overhead ≈ m·T_solver/R extra forwards per step — at
-m=4 chunks, T=20, R=100 that is ~0.8 forwards/step. Enable after a warmup (drift only exists once generation
-is plausible); ramp λ_CF 0→~0.3.
+m=4 chunks, T=20, R=100 that is \~0.8 forwards/step. Enable after a warmup (drift only exists once generation
+is plausible); ramp λ_CF 0→\~0.3.
 
-**Predicted effects (from our measurements).** (i) Kills exposure-bias drift at the source — the ~95%
+**Predicted effects (from our measurements).** (i) Kills exposure-bias drift at the source — the \~95%
 systematic velocity error never accumulates. (ii) Trains chunk-edge conditionals against a clean teacher →
 prevents the block-edge seam pulse that fixed-cadence adaptation bakes in (our jitter/chunk-7 arms showed the
 defect is conditioning-budget-bound, which full-scale training closes). (iii) The drift–progression trade
