@@ -11,8 +11,9 @@
 This repository is for the Clean Forcing method introduced in the following paper:
 
 > **Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base** \
-> [Wenqing Wang](https://wenqing-wang.netlify.app/)<sup>1</sup>, Joonghyuk Shin<sup>2</sup>, Jonathan Tremblay<sup>3</sup>, Chan Hee Song<sup>3</sup>, and [Yun Fu](https://www1.ece.neu.edu/~yunfu/)<sup>1</sup> \
-> <sup>1</sup>Northeastern University, <sup>2</sup>Seoul National University, <sup>3</sup>NVIDIA
+> [Wenqing Wang](https://wenqing-wang.netlify.app/)<sup>1</sup>, [Joonghyuk Shin](https://joonghyuk.com/)<sup>2</sup>, [Jonathan Tremblay](https://jtremblay.org/)<sup>3†</sup>, [Chan Hee Song](https://chanh.ee/)<sup>3†</sup>, and [Yun Fu](https://www1.ece.neu.edu/~yunfu/)<sup>1†</sup> \
+> <sup>1</sup>Northeastern University, <sup>2</sup>Seoul National University, <sup>3</sup>NVIDIA \
+> <sup>†</sup>Co-last authors
 
 ## Contents
 1. [Abstract](#abstract)
